@@ -1,0 +1,6 @@
+{
+  "name": "AI Website Builder",
+  "description": "A Lovable-style AI Website Builder. Enter a natural language prompt to generate complete, production-ready, multi-page React and Next.js websites. Includes a live responsive preview, interactive code editor, and conversational AI chat for edits.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
