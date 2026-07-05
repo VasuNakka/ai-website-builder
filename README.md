@@ -7,6 +7,13 @@
 Generate beautiful, responsive, multi-page websites from simple natural language prompts using Google Gemini AI.
 
 ---
+## 🌐 Live Demo
+
+🔗 **Live Website:** https://ai-website-builder-a1lk.onrender.com
+
+> Experience PromptCraft AI live and generate responsive websites from natural language prompts.
+
+---
 
 ![React](https://img.shields.io/badge/React-19-blue?logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
@@ -304,7 +311,27 @@ http://localhost:3000
 
 # 📸 Screenshots
 
-> Screenshots will be added soon.
+## 🏠 Home Page
+
+![Home Page](screenshots/home.png)
+
+---
+
+## ⚡ AI Website Generation
+
+![Generating Website](screenshots/generating.png)
+
+---
+
+## 🌐 Generated Website
+
+![Generated Website](screenshots/generated-website.png)
+
+---
+
+## 💻 Code Explorer
+
+![Code Explorer](screenshots/code-explorer.png)
 
 ---
 
