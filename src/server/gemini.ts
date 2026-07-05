@@ -141,7 +141,7 @@ Return a single JSON object matching the following TypeScript structure:
     });
 
     const parsed = JSON.parse(response.text?.trim() || "{}");
-    
+
     // Add unique ID and prompt properties to complete the Project type
     const project: Project = {
       id: `proj_${Math.random().toString(36).substring(2, 11)}`,
@@ -250,7 +250,10 @@ Return the FULL updated project JSON matching the same schema:
     });
 
     const parsed = JSON.parse(response.text?.trim() || "{}");
-
+    console.log("========== GEMINI RESPONSE ==========");
+    console.log(parsed.files);
+    console.log("Files:", Object.keys(parsed.files || {}));
+    console.log("=====================================");
     const updatedProject: Project = {
       id: project.id,
       name: parsed.name || project.name,
