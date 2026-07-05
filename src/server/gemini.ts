@@ -251,8 +251,17 @@ Return the FULL updated project JSON matching the same schema:
 
     const parsed = JSON.parse(response.text?.trim() || "{}");
     console.log("========== GEMINI RESPONSE ==========");
+
+    console.log("Project name:", parsed.name);
+
+    console.log("Pages:");
+    console.log(parsed.pages);
+
+    console.log("Files:");
     console.log(parsed.files);
-    console.log("Files:", Object.keys(parsed.files || {}));
+
+    console.log("File count:", Object.keys(parsed.files || {}).length);
+
     console.log("=====================================");
     const updatedProject: Project = {
       id: project.id,
