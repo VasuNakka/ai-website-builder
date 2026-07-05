@@ -6,7 +6,7 @@ import { generateWebsite, chatEditWebsite } from "./src/server/gemini.ts";
 
 async function startServer() {
   const app = express();
-  const PORT = process.env.PORT || 3000;
+  const PORT = Number(process.env.PORT) || 3000;
 
   // Increase payload size limits to allow handling rich components and code structures
   app.use(express.json({ limit: "50mb" }));
