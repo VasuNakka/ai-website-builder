@@ -109,7 +109,7 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
   const handleSaveCode = () => {
     onUpdateProject(prev => {
       const updatedFiles = { ...prev.files, [selectedFilePath]: editorCode };
-      
+
       // Keep state fully aligned
       return {
         ...prev,
@@ -171,16 +171,21 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
     }, 1800);
 
     try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          project: project,
-          message: userMessage.content,
-          history: chatMessages.map(m => ({ role: m.role, content: m.content }))
-        })
-      });
-
+      const response = await fetch(
+        "https://ai-website-builder-a1lk.onrender.com/api/chat",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            project: project,
+            message: userMessage.content,
+            history: chatMessages.map(m => ({
+              role: m.role,
+              content: m.content
+            }))
+          })
+        }
+      );
       clearInterval(interval);
 
       if (!response.ok) {
@@ -221,7 +226,7 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
   const handleExportZIP = async () => {
     try {
       const zip = new JSZip();
-      
+
       Object.entries(project.files).forEach(([filePath, content]) => {
         zip.file(filePath, content as string);
       });
@@ -232,12 +237,12 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
 
       const blob = await zip.generateAsync({ type: "blob" });
       const url = URL.createObjectURL(blob);
-      
+
       const link = document.createElement("a");
       link.href = url;
       link.download = `${project.name.toLowerCase()}-export.zip`;
       link.click();
-      
+
       URL.revokeObjectURL(url);
     } catch (err) {
       console.error(err);
@@ -291,7 +296,7 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
 
   return (
     <div className="h-screen w-full flex flex-col bg-neutral-900 text-neutral-100 overflow-hidden font-sans">
-      
+
       {/* Top workspace controller header */}
       <header className="h-14 px-4 bg-neutral-950 border-b border-neutral-800 flex items-center justify-between shrink-0 relative z-10 shadow-lg">
         <div className="flex items-center gap-3">
@@ -302,7 +307,7 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
-          
+
           <div className="h-4 w-px bg-neutral-800"></div>
 
           <div>
@@ -322,25 +327,22 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
         <div className="hidden md:flex items-center gap-1.5 bg-neutral-900 p-1 border border-neutral-800 rounded-lg">
           <button
             onClick={() => setViewMode("split")}
-            className={`text-xs px-2.5 py-1 rounded font-medium transition-all cursor-pointer ${
-              viewMode === "split" ? "bg-neutral-800 text-white" : "text-neutral-400 hover:text-neutral-200"
-            }`}
+            className={`text-xs px-2.5 py-1 rounded font-medium transition-all cursor-pointer ${viewMode === "split" ? "bg-neutral-800 text-white" : "text-neutral-400 hover:text-neutral-200"
+              }`}
           >
             Split Workspace
           </button>
           <button
             onClick={() => { setViewMode("preview"); setActiveTab("preview"); }}
-            className={`text-xs px-2.5 py-1 rounded font-medium transition-all cursor-pointer ${
-              viewMode === "preview" ? "bg-neutral-800 text-white" : "text-neutral-400 hover:text-neutral-200"
-            }`}
+            className={`text-xs px-2.5 py-1 rounded font-medium transition-all cursor-pointer ${viewMode === "preview" ? "bg-neutral-800 text-white" : "text-neutral-400 hover:text-neutral-200"
+              }`}
           >
             Preview Only
           </button>
           <button
             onClick={() => { setViewMode("code"); setActiveTab("code"); }}
-            className={`text-xs px-2.5 py-1 rounded font-medium transition-all cursor-pointer ${
-              viewMode === "code" ? "bg-neutral-800 text-white" : "text-neutral-400 hover:text-neutral-200"
-            }`}
+            className={`text-xs px-2.5 py-1 rounded font-medium transition-all cursor-pointer ${viewMode === "code" ? "bg-neutral-800 text-white" : "text-neutral-400 hover:text-neutral-200"
+              }`}
           >
             Code Explorer
           </button>
@@ -388,10 +390,10 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
 
       {/* Main workspace container */}
       <div className="flex-1 w-full flex overflow-hidden min-h-0">
-        
+
         {/* Left Panel: Page navigator, file explorer & AI Chat */}
         <div className="w-80 border-r border-neutral-800 bg-neutral-950 flex flex-col shrink-0 min-h-0 overflow-y-auto">
-          
+
           {/* Section 1: Page List */}
           <div className="p-4 border-b border-neutral-900">
             <div className="flex items-center gap-1.5 mb-2 text-xs uppercase tracking-widest text-neutral-500 font-semibold">
@@ -407,9 +409,8 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
                       setActivePageName(p.name);
                       onUpdateProject(prev => ({ ...prev, currentPage: p.name }));
                     }}
-                    className={`w-full text-left text-xs px-3 py-2 rounded-lg font-medium flex items-center justify-between transition-colors cursor-pointer ${
-                      isActive ? "bg-neutral-800 text-white" : "text-neutral-400 hover:text-neutral-200"
-                    }`}
+                    className={`w-full text-left text-xs px-3 py-2 rounded-lg font-medium flex items-center justify-between transition-colors cursor-pointer ${isActive ? "bg-neutral-800 text-white" : "text-neutral-400 hover:text-neutral-200"
+                      }`}
                   >
                     <div className="flex items-center gap-2">
                       <span className={`w-1.5 h-1.5 rounded-full ${isActive ? "bg-violet-500" : "bg-neutral-700"}`}></span>
@@ -427,7 +428,7 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
             <div className="flex items-center gap-1.5 mb-2 text-xs uppercase tracking-widest text-neutral-500 font-semibold">
               <FolderOpen className="w-3.5 h-3.5 text-neutral-500" /> Source File Tree
             </div>
-            
+
             <div className="space-y-2">
               {Object.entries(getFileGroups()).map(([folder, files]) => (
                 <div key={folder} className="space-y-1">
@@ -444,9 +445,8 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
                           setSelectedFilePath(file);
                           setActiveTab("code");
                         }}
-                        className={`w-full text-left text-xs pl-4 pr-2 py-1 rounded flex items-center gap-2 truncate font-medium transition-colors cursor-pointer ${
-                          isSelected ? "bg-neutral-900 text-violet-400" : "text-neutral-400 hover:text-neutral-200"
-                        }`}
+                        className={`w-full text-left text-xs pl-4 pr-2 py-1 rounded flex items-center gap-2 truncate font-medium transition-colors cursor-pointer ${isSelected ? "bg-neutral-900 text-violet-400" : "text-neutral-400 hover:text-neutral-200"
+                          }`}
                       >
                         <FileCode className="w-3.5 h-3.5 text-neutral-500 shrink-0" />
                         <span className="truncate">{fileName}</span>
@@ -472,11 +472,10 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
               {chatMessages.map((msg) => (
                 <div
                   key={msg.id}
-                  className={`flex flex-col max-w-[85%] rounded-xl p-3 text-xs leading-relaxed ${
-                    msg.role === "user"
-                      ? "bg-neutral-800 text-white self-end ml-auto"
-                      : "bg-neutral-900/60 border border-neutral-800/80 text-neutral-300 self-start"
-                  }`}
+                  className={`flex flex-col max-w-[85%] rounded-xl p-3 text-xs leading-relaxed ${msg.role === "user"
+                    ? "bg-neutral-800 text-white self-end ml-auto"
+                    : "bg-neutral-900/60 border border-neutral-800/80 text-neutral-300 self-start"
+                    }`}
                 >
                   <p className="whitespace-pre-wrap">{msg.content}</p>
                   <span className="text-[9px] text-neutral-500 self-end mt-1.5">{msg.timestamp}</span>
@@ -521,28 +520,26 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
 
         {/* Middle/Right Workspace area */}
         <div className="flex-1 flex flex-col min-h-0 bg-neutral-900">
-          
+
           {/* Tabs header bar */}
           {viewMode !== "split" && (
             <div className="h-10 px-4 bg-neutral-950 border-b border-neutral-900 flex items-center justify-between shrink-0">
               <div className="flex gap-4">
                 <button
                   onClick={() => setActiveTab("preview")}
-                  className={`text-xs font-semibold flex items-center gap-1.5 h-10 border-b-2 transition-all cursor-pointer ${
-                    activeTab === "preview"
-                      ? "border-violet-500 text-white"
-                      : "border-transparent text-neutral-400 hover:text-neutral-200"
-                  }`}
+                  className={`text-xs font-semibold flex items-center gap-1.5 h-10 border-b-2 transition-all cursor-pointer ${activeTab === "preview"
+                    ? "border-violet-500 text-white"
+                    : "border-transparent text-neutral-400 hover:text-neutral-200"
+                    }`}
                 >
                   <Globe className="w-3.5 h-3.5" /> Interactive Live Preview
                 </button>
                 <button
                   onClick={() => setActiveTab("code")}
-                  className={`text-xs font-semibold flex items-center gap-1.5 h-10 border-b-2 transition-all cursor-pointer ${
-                    activeTab === "code"
-                      ? "border-violet-500 text-white"
-                      : "border-transparent text-neutral-400 hover:text-neutral-200"
-                  }`}
+                  className={`text-xs font-semibold flex items-center gap-1.5 h-10 border-b-2 transition-all cursor-pointer ${activeTab === "code"
+                    ? "border-violet-500 text-white"
+                    : "border-transparent text-neutral-400 hover:text-neutral-200"
+                    }`}
                 >
                   <Code className="w-3.5 h-3.5" /> Source Code Editor
                 </button>
@@ -552,11 +549,11 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
 
           {/* Core Content Area */}
           <div className="flex-1 flex min-h-0 relative">
-            
+
             {/* SPLIT VIEW WORKSPACE LAYOUT */}
             {viewMode === "split" ? (
               <div className="w-full h-full flex divide-x divide-neutral-800">
-                
+
                 {/* Left split side: Live Preview */}
                 <div className="flex-1 flex flex-col min-w-0 bg-neutral-950/20">
                   <div className="h-10 px-4 bg-neutral-950/40 border-b border-neutral-800/80 flex items-center justify-between shrink-0">
@@ -568,27 +565,24 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
                     <div className="flex items-center gap-1.5 bg-neutral-900 p-0.5 border border-neutral-800 rounded-md">
                       <button
                         onClick={() => setViewportSize("desktop")}
-                        className={`p-1.5 rounded transition-all cursor-pointer ${
-                          viewportSize === "desktop" ? "bg-neutral-800 text-white" : "text-neutral-500 hover:text-neutral-300"
-                        }`}
+                        className={`p-1.5 rounded transition-all cursor-pointer ${viewportSize === "desktop" ? "bg-neutral-800 text-white" : "text-neutral-500 hover:text-neutral-300"
+                          }`}
                         title="Desktop view"
                       >
                         <Monitor className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => setViewportSize("tablet")}
-                        className={`p-1.5 rounded transition-all cursor-pointer ${
-                          viewportSize === "tablet" ? "bg-neutral-800 text-white" : "text-neutral-500 hover:text-neutral-300"
-                        }`}
+                        className={`p-1.5 rounded transition-all cursor-pointer ${viewportSize === "tablet" ? "bg-neutral-800 text-white" : "text-neutral-500 hover:text-neutral-300"
+                          }`}
                         title="Tablet view (768px)"
                       >
                         <Tablet className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => setViewportSize("mobile")}
-                        className={`p-1.5 rounded transition-all cursor-pointer ${
-                          viewportSize === "mobile" ? "bg-neutral-800 text-white" : "text-neutral-500 hover:text-neutral-300"
-                        }`}
+                        className={`p-1.5 rounded transition-all cursor-pointer ${viewportSize === "mobile" ? "bg-neutral-800 text-white" : "text-neutral-500 hover:text-neutral-300"
+                          }`}
                         title="Mobile view (380px)"
                       >
                         <Smartphone className="w-3.5 h-3.5" />
@@ -599,9 +593,8 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
                   {/* Sandbox Frame */}
                   <div className="flex-1 p-6 flex items-center justify-center bg-neutral-900 overflow-hidden relative">
                     <div
-                      className={`h-full transition-all duration-300 rounded-xl overflow-hidden border border-neutral-800 shadow-2xl bg-white ${
-                        viewportSize === "desktop" ? "w-full" : viewportSize === "tablet" ? "w-[768px]" : "w-[380px] border-8 border-neutral-800"
-                      }`}
+                      className={`h-full transition-all duration-300 rounded-xl overflow-hidden border border-neutral-800 shadow-2xl bg-white ${viewportSize === "desktop" ? "w-full" : viewportSize === "tablet" ? "w-[768px]" : "w-[380px] border-8 border-neutral-800"
+                        }`}
                     >
                       <iframe
                         srcDoc={activePageObj?.previewHtml}
@@ -636,7 +629,7 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
                         <div key={i}>{i + 1}</div>
                       ))}
                     </div>
-                    
+
                     <textarea
                       value={editorCode}
                       onChange={(e) => setEditorCode(e.target.value)}
@@ -657,25 +650,22 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
                       <div className="flex items-center gap-1 bg-neutral-900 p-0.5 border border-neutral-800 rounded-md">
                         <button
                           onClick={() => setViewportSize("desktop")}
-                          className={`p-1 rounded transition-all cursor-pointer ${
-                            viewportSize === "desktop" ? "bg-neutral-800 text-white" : "text-neutral-500 hover:text-neutral-300"
-                          }`}
+                          className={`p-1 rounded transition-all cursor-pointer ${viewportSize === "desktop" ? "bg-neutral-800 text-white" : "text-neutral-500 hover:text-neutral-300"
+                            }`}
                         >
                           <Monitor className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => setViewportSize("tablet")}
-                          className={`p-1 rounded transition-all cursor-pointer ${
-                            viewportSize === "tablet" ? "bg-neutral-800 text-white" : "text-neutral-500 hover:text-neutral-300"
-                          }`}
+                          className={`p-1 rounded transition-all cursor-pointer ${viewportSize === "tablet" ? "bg-neutral-800 text-white" : "text-neutral-500 hover:text-neutral-300"
+                            }`}
                         >
                           <Tablet className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => setViewportSize("mobile")}
-                          className={`p-1 rounded transition-all cursor-pointer ${
-                            viewportSize === "mobile" ? "bg-neutral-800 text-white" : "text-neutral-500 hover:text-neutral-300"
-                          }`}
+                          className={`p-1 rounded transition-all cursor-pointer ${viewportSize === "mobile" ? "bg-neutral-800 text-white" : "text-neutral-500 hover:text-neutral-300"
+                            }`}
                         >
                           <Smartphone className="w-3.5 h-3.5" />
                         </button>
@@ -684,9 +674,8 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
 
                     <div className="flex-1 p-6 flex items-center justify-center bg-neutral-900 overflow-hidden">
                       <div
-                        className={`h-full transition-all duration-300 rounded-xl overflow-hidden border border-neutral-800 shadow-2xl bg-white ${
-                          viewportSize === "desktop" ? "w-full" : viewportSize === "tablet" ? "w-[768px]" : "w-[380px] border-8 border-neutral-800"
-                        }`}
+                        className={`h-full transition-all duration-300 rounded-xl overflow-hidden border border-neutral-800 shadow-2xl bg-white ${viewportSize === "desktop" ? "w-full" : viewportSize === "tablet" ? "w-[768px]" : "w-[380px] border-8 border-neutral-800"
+                          }`}
                       >
                         <iframe
                           srcDoc={activePageObj?.previewHtml}
@@ -716,7 +705,7 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
                           <div key={i}>{i + 1}</div>
                         ))}
                       </div>
-                      
+
                       <textarea
                         value={editorCode}
                         onChange={(e) => setEditorCode(e.target.value)}
@@ -756,7 +745,7 @@ export const EditorWorkspace: React.FC<EditorWorkspaceProps> = ({
               <div className="bg-[#0b0c13] rounded-lg p-4 font-mono text-xs text-slate-300 border border-neutral-800/60 max-h-64 overflow-y-auto space-y-2">
                 {deployLogs.map((log, i) => (
                   <div key={i} className="flex items-start gap-2">
-                    <span className="text-neutral-600 select-none">[{i+1}]</span>
+                    <span className="text-neutral-600 select-none">[{i + 1}]</span>
                     <span>{log}</span>
                   </div>
                 ))}

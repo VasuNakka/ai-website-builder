@@ -68,11 +68,14 @@ export default function App() {
     }, 1500);
 
     try {
-      const response = await fetch("/api/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: promptText })
-      });
+      const response = await fetch(
+        "https://ai-website-builder-a1lk.onrender.com/api/generate",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: promptText }),
+        }
+      );
 
       clearInterval(interval);
 
@@ -115,7 +118,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen w-full bg-[#fafafd] text-[#111218] flex flex-col font-sans">
-      
+
       {/* Top Banner / Navbar */}
       <header className="h-16 px-6 bg-white border-b border-neutral-150 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-2">
@@ -132,18 +135,18 @@ export default function App() {
 
       {/* Main Container */}
       <main className="flex-1 w-full max-w-5xl mx-auto px-6 py-12 flex flex-col">
-        
+
         {/* Onboarding Dashboard */}
         {!isGenerating ? (
           <div className="space-y-12 animate-fade-in">
-            
+
             {/* Visual Header Block */}
             <div className="text-center space-y-4 max-w-3xl mx-auto">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-violet-50 border border-violet-100 rounded-full text-xs font-semibold text-violet-700 mb-2">
                 <Sparkles className="w-3.5 h-3.5" /> 100% Production-Ready Outputs
               </div>
               <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-neutral-900 leading-tight">
-                Instantly build multi-page websites <br/>
+                Instantly build multi-page websites <br />
                 <span className="bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">with fully editable source code</span>
               </h1>
               <p className="text-sm md:text-base text-neutral-500 max-w-2xl mx-auto leading-relaxed">
@@ -211,7 +214,7 @@ export default function App() {
           /* IMMERSIVE COMPILER LOADING PAGE */
           <div className="flex-1 flex flex-col items-center justify-center py-16 animate-pulse">
             <div className="max-w-lg w-full bg-neutral-950 rounded-2xl border border-neutral-800 overflow-hidden shadow-2xl p-6 space-y-6">
-              
+
               {/* Dynamic Header */}
               <div className="flex items-center justify-between border-b border-neutral-800 pb-4">
                 <div className="flex items-center gap-2">
@@ -233,9 +236,8 @@ export default function App() {
                   return (
                     <div
                       key={index}
-                      className={`flex items-start gap-2.5 transition-all duration-300 ${
-                        isLast ? "text-violet-400 font-semibold" : "text-neutral-500"
-                      }`}
+                      className={`flex items-start gap-2.5 transition-all duration-300 ${isLast ? "text-violet-400 font-semibold" : "text-neutral-500"
+                        }`}
                     >
                       {isLast ? (
                         <Terminal className="w-3.5 h-3.5 text-violet-400 animate-pulse shrink-0 mt-0.5" />
